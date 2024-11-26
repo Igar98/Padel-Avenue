@@ -47,6 +47,15 @@ public interface PlayerService {
     public PlayerDto getPlayerByPhone(String phone) throws ResourceNotFoundException;
 
     /**
+     * Set player points.
+     * 
+     * @param points   Points.
+     * @param playerId Player id.
+     * @throws ResourceNotFoundException.
+     */
+    public void setPlayerPoints(Integer points, UUID playerId) throws ResourceNotFoundException;
+
+    /**
      * Create player.
      * 
      * @param player Player.
@@ -92,4 +101,9 @@ public interface PlayerService {
      * @return Leaderboard.
      */
     public List<LeaderboardEntryDto> getLeaderboard();
+
+    /**
+     * Reset all player points.
+     */
+    public void resetAllPlayerPoints();
 }

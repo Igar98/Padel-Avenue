@@ -51,6 +51,13 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    public void setPlayerPoints(Integer points, UUID playerId) throws ResourceNotFoundException {
+        Player player = findPlayerOrThrow(playerId);
+        player.setPoints(points);
+        playerRepository.save(player);
+    }
+
+    @Override
     @Transactional
     public PlayerDto createPlayer(PlayerDto playerDto) throws ValidationException {
         // Check if phone or name already exists
@@ -104,6 +111,11 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public List<LeaderboardEntryDto> getLeaderboard() {
         return playerRepository.getLeaderboard();
+    }
+
+    @Override
+    public void resetAllPlayerPoints() {
+        playerRepository.resetAllPlayerPoints();
     }
 
     /*

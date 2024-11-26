@@ -1,0 +1,206 @@
+{
+  "info": {
+    "name": "Padel League API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Players",
+      "item": [
+        {
+          "name": "Get All Players",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/players"
+          }
+        },
+        {
+          "name": "Get Player by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/players/123e4567-e89b-12d3-a456-426614174000"
+          }
+        },
+        {
+          "name": "Create New Player",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/players",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "name": "Nuevo Jugador",
+                "phone": "+34600000011",
+                "isAdmin": false,
+                "points": 0,
+                "isActive": true
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Player",
+          "request": {
+            "method": "PUT",
+            "url": "{{base_url}}/api/v1/players/123e4567-e89b-12d3-a456-426614174000",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "name": "Juan Admin Updated",
+                "phone": "+34600000001",
+                "isAdmin": true,
+                "points": 0,
+                "isActive": true
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Player",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/v1/players/123e4567-e89b-12d3-a456-426614174009"
+          }
+        },
+        {
+          "name": "Get Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/players/leaderboard"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Matches",
+      "item": [
+        {
+          "name": "Get Current Week Matches",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/matches/week",
+            "query": [
+              {
+                "key": "weekOf",
+                "value": "2024-03-25"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Get Player Matches",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/matches/player/123e4567-e89b-12d3-a456-426614174000"
+          }
+        },
+        {
+          "name": "Register Match Result",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/matches",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "team1Player1Id": "123e4567-e89b-12d3-a456-426614174000",
+                "team1Player2Id": "123e4567-e89b-12d3-a456-426614174001",
+                "team2Player1Id": "123e4567-e89b-12d3-a456-426614174002",
+                "team2Player2Id": "123e4567-e89b-12d3-a456-426614174003",
+                "team1Won": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Match Generation",
+      "item": [
+        {
+          "name": "Generate Weekly Matches (Random)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/matches/generation/generate",
+            "query": [
+              {
+                "key": "strategy",
+                "value": "RANDOM"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Generate Weekly Matches (Balanced)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/matches/generation/generate",
+            "query": [
+              {
+                "key": "strategy",
+                "value": "BALANCED"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Generate Weekly Matches (Probabilistic)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/matches/generation/generate",
+            "query": [
+              {
+                "key": "strategy",
+                "value": "PROBABILISTIC"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Regenerate Weekly Matches",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/matches/generation/regenerate"
+          }
+        },
+        {
+          "name": "Get Current Week Matches",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/matches/generation/current"
+          }
+        },
+        {
+          "name": "Reset Tournament",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/matches/generation/reset"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    }
+  ]
+}

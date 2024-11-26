@@ -1,16 +1,11 @@
 package com.padelavenue.wasbot.web.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class LeaderboardEntryDto {
-    private Long playerId;
-    private String playerName;
-    private Integer points;
-    private Integer matchesPlayed;
-    private Integer matchesWon;
-}
+public record LeaderboardEntryDto(
+    UUID playerId,
+    String playerName,
+    Integer points,
+    Long matchesPlayed,
+    Long matchesWon
+) {}
