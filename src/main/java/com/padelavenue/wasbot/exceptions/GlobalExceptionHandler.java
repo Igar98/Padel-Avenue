@@ -25,97 +25,112 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    private final MessageSource messageSource;
+        private final MessageSource messageSource;
 
-    /*
-     * Manages controller validation exceptions.
-     */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(
-            MethodArgumentNotValidException ex, WebRequest request, Locale locale) {
+        /*
+         * Manages controller validation exceptions.
+         */
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<ErrorResponse> handleValidationExceptions(
+                        MethodArgumentNotValidException ex, WebRequest request, Locale locale) {
 
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = messageSource.getMessage(error.getDefaultMessage(),
-                    error.getArguments(),
-                    error.getDefaultMessage(),
-                    locale);
-            errors.put(fieldName, errorMessage);
-        });
+                Map<String, String> errors = new HashMap<>();
+                ex.getBindingResult().getAllErrors().forEach(error -> {
+                        String fieldName = ((FieldError) error).getField();
+                        String errorMessage = messageSource.getMessage(error.getDefaultMessage(),
+                                        error.getArguments(),
+                                        error.getDefaultMessage(),
+                                        locale);
+                        errors.put(fieldName, errorMessage);
+                });
 
-        String message = messageSource.getMessage("validation.generic.error",
-                null,
-                "Validation Failed",
-                locale);
+                String message = messageSource.getMessage("validation.generic.error",
+                                null,
+                                "Validation Failed",
+                                locale);
 
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .error(message)
-                .message("There were validation errors")
-                .path(request.getDescription(false))
-                .validationErrors(errors)
-                .build();
+                ErrorResponse errorResponse = ErrorResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .error(message)
+                                .message("There were validation errors")
+                                .path(request.getDescription(false))
+                                .validationErrors(errors)
+                                .build();
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
+                return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> handleConstraintViolationException(
-            ConstraintViolationException ex, WebRequest request) {
+        @ExceptionHandler(ConstraintViolationException.class)
+        public ResponseEntity<ErrorResponse> handleConstraintViolationException(
+                        ConstraintViolationException ex, WebRequest request) {
 
-        Map<String, String> errors = new HashMap<>();
-        ex.getConstraintViolations().forEach(violation -> {
-            String fieldName = violation.getPropertyPath().toString();
-            String errorMessage = violation.getMessage();
-            errors.put(fieldName, errorMessage);
-        });
+                Map<String, String> errors = new HashMap<>();
+                ex.getConstraintViolations().forEach(violation -> {
+                        String fieldName = violation.getPropertyPath().toString();
+                        String errorMessage = violation.getMessage();
+                        errors.put(fieldName, errorMessage);
+                });
 
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .error("Constraint Violation")
-                .message("There were validation errors")
-                .path(request.getDescription(false))
-                .validationErrors(errors)
-                .build();
+                ErrorResponse errorResponse = ErrorResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .error("Constraint Violation")
+                                .message("There were validation errors")
+                                .path(request.getDescription(false))
+                                .validationErrors(errors)
+                                .build();
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
+                return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
 
-    /*
-     * Manages service or business validation exceptions.
-     */
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ErrorResponse> handleValidationException(
-            ValidationException ex, WebRequest request) {
+        @ExceptionHandler(IllegalArgumentException.class)
+        public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
+                        IllegalArgumentException ex, WebRequest request) {
 
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .error("Validation Failed")
-                .message(ex.getMessage())
-                .path(request.getDescription(false))
-                .validationErrors(ex.getErrors())
-                .build();
+                ErrorResponse errorResponse = ErrorResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .error("Illegal Argument")
+                                .message(ex.getMessage())
+                                .path(request.getDescription(false))
+                                .build();
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
+                return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
-            ResourceNotFoundException ex, WebRequest request) {
+        /*
+         * Manages service or business validation exceptions.
+         */
+        @ExceptionHandler(ValidationException.class)
+        public ResponseEntity<ErrorResponse> handleValidationException(
+                        ValidationException ex, WebRequest request) {
 
-        ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.NOT_FOUND.value())
-                .error("Not Found")
-                .message(ex.getMessage())
-                .path(request.getDescription(false))
-                .build();
+                ErrorResponse errorResponse = ErrorResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .error("Validation Failed")
+                                .message(ex.getMessage())
+                                .path(request.getDescription(false))
+                                .validationErrors(ex.getErrors())
+                                .build();
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
-    
+                return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+
+        @ExceptionHandler(ResourceNotFoundException.class)
+        public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
+                        ResourceNotFoundException ex, WebRequest request) {
+
+                ErrorResponse errorResponse = ErrorResponse.builder()
+                                .timestamp(LocalDateTime.now())
+                                .status(HttpStatus.NOT_FOUND.value())
+                                .error("Not Found")
+                                .message(ex.getMessage())
+                                .path(request.getDescription(false))
+                                .build();
+
+                return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        }
+
 }
