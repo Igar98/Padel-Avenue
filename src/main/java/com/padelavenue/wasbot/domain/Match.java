@@ -22,7 +22,9 @@ public class Match {
     @Column(nullable = false)
     private LocalDateTime playedAt;
     
-    @Formula("DATE(DATE_TRUNC('week', played_at))")
+    //TODO: Change this when changing to postgresql
+    // @Formula("DATE(DATE_TRUNC('week', played_at))")
+    @Formula("PARSEDATETIME(FORMATDATETIME(played_at, 'yyyy-MM-dd'), 'yyyy-MM-dd')")
     private LocalDate weekOf;
     
     @NotNull
