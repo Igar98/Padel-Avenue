@@ -2,7 +2,6 @@ package com.padelavenue.wasbot.services.interfaces;
 
 import java.util.List;
 
-import com.padelavenue.wasbot.services.utils.MatchGenerationStrategyEnum;
 import com.padelavenue.wasbot.web.dto.MatchResponseDto;
 
 import jakarta.validation.ValidationException;
@@ -11,10 +10,9 @@ public interface WeeklyMatchGenerationService {
     /**
      * Generates random matches for active players for the current week.
      * 
-     * @param strategy Match generation strategy
      * @return List of generated matches.
      */
-    List<MatchResponseDto> generateWeeklyMatches(MatchGenerationStrategyEnum strategy) throws ValidationException;
+    List<MatchResponseDto> generateWeeklyMatches() throws ValidationException;
 
     /**
      * Regenerates matches for the current week.

@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "match.generation.strategy",
+  "type": "java.lang.String",
+  "description": "All the possible values for the match generation strategy. ()"
+}]}
